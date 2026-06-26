@@ -1,0 +1,2 @@
+curl http://localhost:5000/author/Dante%20Alighieri/
+{"booksbyauthor":[{"author":"Dante Alighieri","title":"The Divine Comedy","reviews":{}}]}

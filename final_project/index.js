@@ -11,7 +11,24 @@ app.use(express.json());
 app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
 
 app.use("/customer/auth/*", function auth(req,res,next){
-//Write the authenication mechanism here
+    // Verifica si existe una sesión de autorización
+    if (req.session.authorization) {
+        // Obtiene el token de la sesión
+        let token = req.session.authorization['accessToken'];
+
+        // Verifica el JWT
+        jwt.verify(token, "access", (err, user) => {
+            if (!err) {
+                req.user = user;
+                // next() le dice a Express: "Todo bien, pasa a la ruta de auth_users.js"
+                next(); 
+            } else {
+                return res.status(403).json({message: "Token inválido o expirado."});
+            }
+        });
+    } else {
+        return res.status(403).json({message: "Usuario no ha iniciado sesión."});
+    }
 });
  
 const PORT =5000;
