@@ -1,2 +1,0 @@
-curl -X PUT -b cookies.txt "http://localhost:5000/customer/auth/review/2?review=Un%20libro%20excelente"
-{"message":"La reseña del usuario 'Jou' para el libro con ISBN 2 ha sido guardada/actualizada."}

@@ -1,2 +1,0 @@
-curl -X DELETE -b cookies.txt http://localhost:5000/customer/auth/review/1 
-{"message":"La reseña del usuario 'Jou' para el libro con ISBN 1 fue eliminada."}

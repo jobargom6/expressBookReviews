@@ -1,2 +1,0 @@
-curl http://localhost:5000/isbn/4/ 
-{"author":"Unknown","title":"The Epic Of Gilgamesh","reviews":{}}
