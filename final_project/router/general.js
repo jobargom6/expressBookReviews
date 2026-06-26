@@ -1,10 +1,13 @@
 const express = require('express');
-const axios = require('axios');
+const axios = require('axios'); // 
 let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
+// ==========================================
+// SECCIÓN 1: RUTAS DEL SERVIDOR (API)
+// ==========================================
 
 public_users.post("/register", (req,res) => {
   const username = req.body.username;
@@ -79,24 +82,32 @@ public_users.get('/review/:isbn',function (req, res) {
 
 module.exports.general = public_users;
 
-/* ==========================================
-   SIMULACIÓN CLIENTE AXIOS (Tareas 10 a 13)
-   ==========================================
-*/
+// ==========================================
+// SECCIÓN 2: SIMULACIÓN CLIENTE AXIOS
+// ==========================================
+const BASE_URL = "http://localhost:5000";
 
-// Obtener la lista de libros disponibles usando Async/Await
+/**
+ * Obtener la lista de libros disponibles.
+ * Lógica: Se utiliza async/await para manejar la petición HTTP de forma asíncrona. 
+ * El bloque try/catch permite capturar errores de conexión y evitar que el servidor colapse.
+ */
 const getAllBooksAsync = async () => {
     try {
-        const response = await axios.get("http://localhost:5000/");
+        const response = await axios.get(`${BASE_URL}/`);
         console.log("Lista de libros obtenida con Axios:\n", response.data);
     } catch (error) {
         console.error("Error al obtener libros:", error.message);
     }
 };
 
-// Obtener detalles del libro basado en ISBN usando Promesas (Callbacks .then/.catch)
+/**
+ * Obtener detalles del libro basado en ISBN.
+ * Lógica: Implementación usando Promesas tradicionales (.then / .catch). 
+ * Ideal para encadenar respuestas exitosas o manejar el rechazo si el ISBN no existe.
+ */
 const getBookByIsbnPromise = (isbn) => {
-    axios.get(`http://localhost:5000/isbn/${isbn}`)
+    axios.get(`${BASE_URL}/isbn/${isbn}`)
         .then(response => {
             console.log(`\nDetalles del libro con ISBN ${isbn}:\n`, response.data);
         })
@@ -105,27 +116,35 @@ const getBookByIsbnPromise = (isbn) => {
         });
 };
 
-// Obtener detalles del libro basado en Autor usando Async/Await
+/**
+ * Obtener detalles del libro basado en Autor.
+ * Lógica: Uso de async/await. La variable author se inyecta en la URL de forma dinámica.
+ * Espera la resolución de la promesa antes de imprimir los datos en consola.
+ */
 const getBookByAuthorAsync = async (author) => {
     try {
-        const response = await axios.get(`http://localhost:5000/author/${author}`);
+        const response = await axios.get(`${BASE_URL}/author/${author}`);
         console.log(`\nLibros del autor ${author}:\n`, response.data);
     } catch (error) {
         console.error("Error al obtener libro por autor:", error.message);
     }
 };
 
-// Obtener detalles del libro basado en Título usando Async/Await
+/**
+ * Obtener detalles del libro basado en Título.
+ * Lógica: Uso de async/await para solicitar a la API los libros filtrados por título.
+ * Si la petición es exitosa, se muestran los detalles, de lo contrario se imprime el error.
+ */
 const getBookByTitleAsync = async (title) => {
     try {
-        const response = await axios.get(`http://localhost:5000/title/${title}`);
+        const response = await axios.get(`${BASE_URL}/title/${title}`);
         console.log(`\nLibros con el título ${title}:\n`, response.data);
     } catch (error) {
         console.error("Error al obtener libro por título:", error.message);
     }
 };
 
-
+// Llamadas a las funciones 
 getAllBooksAsync();
 getBookByIsbnPromise(5);
 getBookByAuthorAsync("Jane Austen");

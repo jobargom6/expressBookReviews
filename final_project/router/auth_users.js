@@ -59,7 +59,8 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     // Usa el nombre de usuario de la sesión como clave dentro del objeto de reseñas
     books[isbn].reviews[username] = review;
     return res.status(200).json({
-      message: `La reseña del usuario '${username}' para el libro con ISBN ${isbn} ha sido guardada/actualizada.`
+      message: "Review added/updated successfully",
+      reviews: books[isbn].reviews
     });
   } else {
     return res.status(404).json({message: "Libro no encontrado."});
@@ -80,7 +81,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
     if (books[isbn].reviews[username]) {
       delete books[isbn].reviews[username]; // Elimina la propiedad del objeto
       return res.status(200).json({
-        message: `La reseña del usuario '${username}' para el libro con ISBN ${isbn} fue eliminada.`
+        message: `Review for ISBN ${isbn} deleted.`
       });
     } else {
       return res.status(404).json({message: "No tienes ninguna reseña publicada para este libro."});
